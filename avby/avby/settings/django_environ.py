@@ -9,8 +9,14 @@ env = environ.Env(
     POSTGRES_DB=(str, 'av_db'),
     POSTGRES_USER=(str, 'av_user'),
     POSTGRES_PASSWORD=(str, 'av_password'),
-    POSTGRES_HOST=(str, 'db'),
+    POSTGRES_HOST=(str, 'localhost'),
     POSTGRES_PORT=(int, None),
+
+    EMAIL_USE_TLS=(bool, True),
+    EMAIL_HOST=(str, 'smtp.gmail.com'),
+    EMAIL_HOST_USER=(str, 'ignatenkoroma4@gmail.com'),
+    EMAIL_PORT=(int, 587),
+    EMAIL_HOST_PASSWORD=(str, '')
 
 )
 

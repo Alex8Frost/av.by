@@ -2,6 +2,8 @@
 Django==4.1.7
 djangorestframework==3.14.0
 django-environ==0.10.0
+django-choices==1.7.2
+django-registration==3.3.0
 
 
 # DataBase
