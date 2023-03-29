@@ -3,7 +3,12 @@ Django==4.1.7
 djangorestframework==3.14.0
 django-environ==0.10.0
 django-choices==1.7.2
-django-registration==3.3.0
+drf-nested-routers==0.93.4
+django-filter==22.1
+Pillow==9.4.0
+djoser==2.1.0
+
+
 
 
 # DataBase

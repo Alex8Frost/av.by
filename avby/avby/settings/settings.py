@@ -1,5 +1,4 @@
 
-from pathlib import Path
 import os
 from .django_environ import env
 
@@ -19,6 +18,19 @@ DEBUG = env('DEBUG')
 ALLOWED_HOSTS = list(env('ALLOWED_HOSTS'))
 
 
+if DEBUG:
+    EMAIL_HOST = 'mailcatcher'
+    EMAIL_HOST_USER = ''
+    EMAIL_HOST_PASSWORD = ''
+    EMAIL_PORT = 1025
+    EMAIL_USE_TLS = False
+else:
+    EMAIL_USE_TLS = env('EMAIL_USE_TLS')
+    EMAIL_HOST = env('EMAIL_HOST')
+    EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+    EMAIL_PORT = env('EMAIL_PORT')
+    EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -29,11 +41,23 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
+    'djoser',
     'back.apps.BackConfig',
-    'django_registration'
-
-
+    'django_filters'
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -54,11 +78,8 @@ REGISTRATION_AFTER_LOGIN = True
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = 'accounts/login/'
 
-EMAIL_USE_TLS = env('EMAIL_USE_TLS')
-EMAIL_HOST = env('EMAIL_HOST')
-EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-EMAIL_PORT = env('EMAIL_PORT')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+
+AUTH_USER_MODEL = 'avby.User'
 
 TEMPLATES = [
     {
@@ -136,3 +157,14 @@ STATIC_ROOT = 'static'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+DJOSER = {
+    'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
+    'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
+    'ACTIVATION_URL': '#/activate/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': True,
+    'SERIALIZERS': {},
+}

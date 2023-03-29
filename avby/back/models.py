@@ -1,5 +1,6 @@
 from django.db import models
 from back import constants
+from django.conf import settings
 
 
 class TransportMark(models.Model):
@@ -37,10 +38,15 @@ class TransportAd(models.Model):
     drive_unit = models.CharField(max_length=32, choices=constants.TypeOfDriveUnit, verbose_name='Привод')
     mileage = models.IntegerField(verbose_name='Пробег')
     vin_number = models.CharField(max_length=17, null=True, blank=True, verbose_name='ВИН номер')
-    status = models.CharField(max_length=16, choices=constants.TransportAdStatus, verbose_name='Статус')
-    description = models.TextField(max_length=500, verbose_name='Описание')
+    status = models.CharField(max_length=16, choices=constants.TransportAdStatus,
+                              default=constants.TransportAdStatus.open, verbose_name='Статус')
+    description = models.TextField(max_length=500, verbose_name='Описание', null=True, blank=True)
     post_date = models.DateTimeField(auto_now=True, verbose_name='Дата подачи')
-    close_date = models.DateTimeField(verbose_name='Дата снятия')
+    close_date = models.DateTimeField(verbose_name='Дата снятия', null=True, blank=True)
+    body = models.CharField(max_length=32, null=True, choices=constants.TransportBody, verbose_name='Кузов')
+    transmission = models.CharField(max_length=32, null=True,
+                                    choices=constants.TransportTransmission, verbose_name='трансмиссия')
+    seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Продавец')
 
     class Meta:
         verbose_name = 'Объявление'
@@ -48,3 +54,15 @@ class TransportAd(models.Model):
 
     def __str__(self):
         return f'{self.mark} {self.model.name}'
+
+
+class Image(models.Model):
+    transport_ad = models.ForeignKey(TransportAd, on_delete=models.CASCADE, verbose_name='Объявление')
+    image = models.ImageField(upload_to='images', blank=True)
+
+    def __str__(self):
+        return self.transport_ad
+
+    class Meta:
+        verbose_name = 'Фото'
+        verbose_name_plural = 'Фотографии'
