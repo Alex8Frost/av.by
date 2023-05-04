@@ -1,6 +1,6 @@
 from django.contrib import admin
 from back.models import TransportModel, TransportMark, TransportAd
-from django.conf import settings
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 
 @admin.register(TransportModel)

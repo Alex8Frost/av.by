@@ -1,7 +1,7 @@
 FROM python:3.11
+
 ENV PYTHONUNBUFFERED 1
-RUN mkdir /src
-WORKDIR /src
-COPY . /src/
+WORKDIR /usr/src/app/
+COPY . /usr/src/app/
 RUN pip install --upgrade pip
-RUN pip install -r /src/requirements.txt
+RUN pip install -r /usr/src/app/requirements.txt

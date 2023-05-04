@@ -1,11 +1,7 @@
-from django.contrib.auth.base_user import BaseUserManager
-from django.contrib.auth.models import AbstractUser
-from django.db import models
+from django.contrib.auth.models import BaseUserManager
 
 
 class MyUserManager(BaseUserManager):
-    def get_queryset(self):
-        return querysets.UserQuerySet(self.model, using=self._db)
 
     def create_user(self, email, password=None):
         """
@@ -18,7 +14,7 @@ class MyUserManager(BaseUserManager):
         user = self.model(
             email=self.normalize_email(email),
         )
-
+        user.username = user.email
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -36,23 +32,3 @@ class MyUserManager(BaseUserManager):
         user.is_superuser = True
         user.save(using=self._db)
         return user
-
-
-class User(AbstractUser):
-    NO_LIMIT_HELP_TEXT = 'No limitation for user. Use all entries from company'
-
-    email = models.EmailField(
-        verbose_name='email address',
-        max_length=255,
-        unique=True,
-    )
-    is_active = models.BooleanField(default=True)
-    is_confirmed = models.BooleanField(default=False)
-
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
-
-    objects = MyUserManager()
-
-    def __str__(self):
-        return self.email

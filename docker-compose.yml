@@ -1,20 +1,14 @@
-version: "3"
+version: "3.7"
 
 services:
-
-  db:
-    image: postgres:13
-    env_file: .env
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    ports:
-      - 5432:5432
 
   django:
     build:
       context: .
       dockerfile: Dockerfile
     image: avby-django:dev
+    environment:
+      DJANGO_SETTINGS_MODULE: avby.settings.settings
     env_file:
       - .env
     command: bash -c "
@@ -25,7 +19,15 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - ./avby:/src/
+      - ./avby:/usr/src/app/
+
+  db:
+    image: postgres:13
+    env_file: .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
 
   mailcatcher:
     image: dockage/mailcatcher:0.7.1

@@ -10,6 +10,7 @@ router.register(r'ad', ViewTransportAd, basename='ad')
 model_router = routers.NestedSimpleRouter(router, r'mark', lookup='mark')
 model_router.register(r'model', ViewTransportModel, basename='mark-model')
 
+
 urlpatterns = [
     path(r'', include(router.urls)),
     path(r'', include(model_router.urls))

@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'django_filters'
 ]
 
+AUTH_USER_MODEL = 'back.User'
+
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
@@ -78,8 +80,6 @@ REGISTRATION_AFTER_LOGIN = True
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = 'accounts/login/'
 
-
-AUTH_USER_MODEL = 'avby.User'
 
 TEMPLATES = [
     {

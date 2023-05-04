@@ -8,3 +8,4 @@ urlpatterns = [
     path(r'auth/', include('djoser.urls.authtoken')),
     path("api/", include('back.urls')),
 ]
+
